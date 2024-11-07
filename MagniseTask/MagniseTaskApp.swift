@@ -11,7 +11,7 @@ import SwiftUI
 struct MagniseTaskApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            AssetDataView()
         }
     }
 }
