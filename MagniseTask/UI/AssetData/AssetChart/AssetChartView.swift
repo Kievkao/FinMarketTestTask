@@ -8,8 +8,8 @@
 import SwiftUI
 import Charts
 
-struct AssetChartView: View {    
-    @ObservedObject var model: AssetChartModel
+struct AssetChartView<Model>: View where Model: AssetChartModelProtocol {
+    @ObservedObject var model: Model
     
     var body: some View {
         Chart(model.chartItems) {
@@ -29,7 +29,7 @@ struct AssetChartView: View {
         .padding()
     }
 }
-//
-//#Preview {
-//    AssetChartView(model: AssertChartModel(instrumentId: .constant(nil)))
-//}
+
+#Preview {
+    AssetChartView(model: MockAssetChartModel())
+}

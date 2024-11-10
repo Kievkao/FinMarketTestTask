@@ -8,11 +8,15 @@
 import Foundation
 import Combine
 
-final class ChartDataService {
+protocol ChartDataServiceProtocol {
+    func getChartData(instrumentId: String, interval: Int, periodicity: String, count: Int) -> AnyPublisher<[HistoricalDataItem], Error>
+}
+
+final class ChartDataService: ChartDataServiceProtocol {
     let apiClient = URLSessionAPIClient<Endpoint>()
     
     func getChartData(instrumentId: String, interval: Int, periodicity: String, count: Int) -> AnyPublisher<[HistoricalDataItem], Error> {
-        apiClient.request(.getHistoricalData(instrumentId: instrumentId, provider: "oanda", interval: interval, periodicity: periodicity, count: count))
+        apiClient.request(.getHistoricalData(instrumentId: instrumentId, interval: interval, periodicity: periodicity, count: count))
             .map { (response: HistoricalDataResponse) in
                 response.data
             }

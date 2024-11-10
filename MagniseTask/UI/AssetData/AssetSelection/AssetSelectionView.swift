@@ -7,14 +7,15 @@
 
 import SwiftUI
 
-struct AssetSelectionView: View {
-    @ObservedObject var model: AssetSelectorViewModel
+struct AssetSelectionView<Model>: View where Model: AssetSelectionViewModelProtocol {
+    @ObservedObject var model: Model
     @State private var selectedIndex: Int? = nil
     
     var body: some View {
         HStack {
             SheetSelector(
                 selectedIndex: $selectedIndex,
+                notSelectedTitle: "Select",
                 options: model.selectionOptions
             )
             Button("Subscribe") {
@@ -25,5 +26,5 @@ struct AssetSelectionView: View {
 }
 
 #Preview {
-    AssetSelectionView(model: AssetSelectorViewModel())
+    AssetSelectionView(model: MockAssetSelectionViewModel())
 }

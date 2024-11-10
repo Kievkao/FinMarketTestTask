@@ -17,7 +17,7 @@
 		3E0627EC2CD94B8C0091CFAD /* Instrument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0627EB2CD94B8C0091CFAD /* Instrument.swift */; };
 		3E0627EE2CD94C220091CFAD /* Streaming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0627ED2CD94C220091CFAD /* Streaming.swift */; };
 		3E0627F02CD94D350091CFAD /* WebSocketConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0627EF2CD94D350091CFAD /* WebSocketConnection.swift */; };
-		3E0627F22CD94EEB0091CFAD /* AssetSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0627F12CD94EEB0091CFAD /* AssetSelectorView.swift */; };
+		3E0627F22CD94EEB0091CFAD /* AssetSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0627F12CD94EEB0091CFAD /* AssetSelectionView.swift */; };
 		3E0627F42CD94F730091CFAD /* SheetSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0627F32CD94F730091CFAD /* SheetSelector.swift */; };
 		3E0627F62CD952070091CFAD /* TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0627F52CD952070091CFAD /* TokenStorage.swift */; };
 		3E0627F92CD953580091CFAD /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0627F82CD953580091CFAD /* KeychainManager.swift */; };
@@ -32,6 +32,7 @@
 		3E0628102CDF63DF0091CFAD /* AssetMarketData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E06280F2CDF63DF0091CFAD /* AssetMarketData.swift */; };
 		3E0628132CDF67820091CFAD /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0628122CDF67820091CFAD /* Formatters.swift */; };
 		3E0628152CDF7EBF0091CFAD /* LiveMarketUpdatesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0628142CDF7EBF0091CFAD /* LiveMarketUpdatesService.swift */; };
+		3E0628192CE11A520091CFAD /* TokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0628182CE11A520091CFAD /* TokenResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,7 +48,7 @@
 		3E0627EB2CD94B8C0091CFAD /* Instrument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instrument.swift; sourceTree = "<group>"; };
 		3E0627ED2CD94C220091CFAD /* Streaming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Streaming.swift; sourceTree = "<group>"; };
 		3E0627EF2CD94D350091CFAD /* WebSocketConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketConnection.swift; sourceTree = "<group>"; };
-		3E0627F12CD94EEB0091CFAD /* AssetSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSelectorView.swift; sourceTree = "<group>"; };
+		3E0627F12CD94EEB0091CFAD /* AssetSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSelectionView.swift; sourceTree = "<group>"; };
 		3E0627F32CD94F730091CFAD /* SheetSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetSelector.swift; sourceTree = "<group>"; };
 		3E0627F52CD952070091CFAD /* TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStorage.swift; sourceTree = "<group>"; };
 		3E0627F82CD953580091CFAD /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
@@ -62,6 +63,7 @@
 		3E06280F2CDF63DF0091CFAD /* AssetMarketData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetMarketData.swift; sourceTree = "<group>"; };
 		3E0628122CDF67820091CFAD /* Formatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatters.swift; sourceTree = "<group>"; };
 		3E0628142CDF7EBF0091CFAD /* LiveMarketUpdatesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveMarketUpdatesService.swift; sourceTree = "<group>"; };
+		3E0628182CE11A520091CFAD /* TokenResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,7 +174,7 @@
 		3E0627FA2CD95A8C0091CFAD /* AssetSelection */ = {
 			isa = PBXGroup;
 			children = (
-				3E0627F12CD94EEB0091CFAD /* AssetSelectorView.swift */,
+				3E0627F12CD94EEB0091CFAD /* AssetSelectionView.swift */,
 				3E0628082CDD1EAE0091CFAD /* AssetSelectorViewModel.swift */,
 			);
 			path = AssetSelection;
@@ -216,6 +218,7 @@
 				3E0627EB2CD94B8C0091CFAD /* Instrument.swift */,
 				3E0627ED2CD94C220091CFAD /* Streaming.swift */,
 				3E06280A2CDD551C0091CFAD /* HistoricalDataResponse.swift */,
+				3E0628182CE11A520091CFAD /* TokenResponse.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -307,7 +310,7 @@
 				3E0627F42CD94F730091CFAD /* SheetSelector.swift in Sources */,
 				3E06280B2CDD551C0091CFAD /* HistoricalDataResponse.swift in Sources */,
 				3E0628132CDF67820091CFAD /* Formatters.swift in Sources */,
-				3E0627F22CD94EEB0091CFAD /* AssetSelectorView.swift in Sources */,
+				3E0627F22CD94EEB0091CFAD /* AssetSelectionView.swift in Sources */,
 				3E0627EC2CD94B8C0091CFAD /* Instrument.swift in Sources */,
 				3E0628152CDF7EBF0091CFAD /* LiveMarketUpdatesService.swift in Sources */,
 				3E06280D2CDF61590091CFAD /* ChartDataService.swift in Sources */,
@@ -320,6 +323,7 @@
 				3E0627FD2CD95AF10091CFAD /* AssetDataView.swift in Sources */,
 				3E0627DD2CD8B6080091CFAD /* AuthService.swift in Sources */,
 				3E0628102CDF63DF0091CFAD /* AssetMarketData.swift in Sources */,
+				3E0628192CE11A520091CFAD /* TokenResponse.swift in Sources */,
 				3E0627E92CD947F60091CFAD /* InstrumentsService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

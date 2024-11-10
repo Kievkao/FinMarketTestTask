@@ -10,6 +10,8 @@ import SwiftUI
 struct SheetSelector: View {
     @State private var isSheetPresented = false
     @Binding var selectedIndex: Int?
+    
+    let notSelectedTitle: String
     let options: [String]
 
     var body: some View {
@@ -18,7 +20,7 @@ struct SheetSelector: View {
                 isSheetPresented.toggle()
             }) {
                 HStack {
-                    Text(selectedIndex.map { options[$0] } ?? "Select an Option")
+                    Text(selectedIndex.map { options[$0] } ?? notSelectedTitle)
                     Spacer()
                     Image(systemName: "chevron.down")
                 }
@@ -28,7 +30,7 @@ struct SheetSelector: View {
             }
             .sheet(isPresented: $isSheetPresented) {
                 VStack {
-                    Text("Select an Option")
+                    Text(notSelectedTitle)
                         .font(.headline)
                         .padding()
 
@@ -50,6 +52,11 @@ struct SheetSelector: View {
         .padding()
     }
 }
+
 #Preview {
-    SheetSelector(selectedIndex: .constant(1), options: ["Apple", "Banana", "Orange", "Mango", "Pineapple", "Grapes"])
+    SheetSelector(
+        selectedIndex: .constant(1),
+        notSelectedTitle: "Select",
+        options: ["Apple", "Banana", "Orange", "Mango", "Pineapple", "Grapes"]
+    )
 }

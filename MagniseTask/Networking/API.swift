@@ -17,6 +17,15 @@ protocol APIEndpoint {
     var parameters: [String: Any]? { get }
 }
 
+protocol APIClient {
+    associatedtype EndpointType: APIEndpoint
+    func request<T: Decodable>(_ endpoint: EndpointType) -> AnyPublisher<T, Error>
+}
+
+struct APIConstants {
+    static let domain = "platform.fintacharts.com"
+}
+
 enum HTTPMethod: String {
     case get = "GET"
     case post = "POST"
@@ -32,11 +41,19 @@ enum APIError: Error {
 
 enum Endpoint: APIEndpoint {
     case getToken
-    case getInstruments(provider: String, kind: String)
-    case getHistoricalData(instrumentId: String, provider: String, interval: Int, periodicity: String, count: Int)
+    case getInstruments
+    case getHistoricalData(instrumentId: String, interval: Int, periodicity: String, count: Int)
     
     var baseURL: URL {
-        return URL(string: "https://platform.fintacharts.com")!
+        URL(string: "https://\(APIConstants.domain)")!
+    }
+    
+    var provider: String {
+        "oanda"
+    }
+    
+    var market: String {
+        "forex"
     }
     
     var path: String {
@@ -89,20 +106,15 @@ enum Endpoint: APIEndpoint {
         switch self {
         case .getToken:
             return ["realm": "fintatech"]
-        case .getInstruments(provider: let provider, kind: let kind):
-            return ["provider": provider, "kind": kind]
-        case .getHistoricalData(let instrumentId, let provider, let interval, let periodicity, let count):
+        case .getInstruments:
+            return ["provider": provider, "kind": market]
+        case .getHistoricalData(let instrumentId, let interval, let periodicity, let count):
             return ["instrumentId": instrumentId, "provider": provider, "interval": interval, "periodicity": periodicity, "barsCount": count]
         }
     }
 }
 
-protocol APIClient {
-    associatedtype EndpointType: APIEndpoint
-    func request<T: Decodable>(_ endpoint: EndpointType) -> AnyPublisher<T, Error>
-}
-
-class URLSessionAPIClient<EndpointType: APIEndpoint>: APIClient {
+final  class URLSessionAPIClient<EndpointType: APIEndpoint>: APIClient {
     func request<T: Decodable>(_ endpoint: EndpointType) -> AnyPublisher<T, Error> {
         var url = endpoint.baseURL.appendingPathComponent(endpoint.path)
         

@@ -16,7 +16,7 @@ final class InstrumentsService: InstrumentsServiceProtocol {
     let apiClient = URLSessionAPIClient<Endpoint>()
     
     func getInstruments() -> AnyPublisher<[Instrument], Error> {
-        apiClient.request(.getInstruments(provider: "oanda", kind: "forex"))
+        apiClient.request(.getInstruments)
             .map { (response: InstrumentsResponse) in
                 response.data
             }

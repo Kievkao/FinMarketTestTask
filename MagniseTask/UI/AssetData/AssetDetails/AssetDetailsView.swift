@@ -23,6 +23,6 @@ struct AssetDetailsView: View {
     }
 }
 
-//#Preview {
-//    return AssetDetailsView(marketData: .constant(.init(from: .init(timestamp: "2024-11-04T19:47:00+00:00", price: 12), symbol: "USD", currencySign: "$")))
-//}
+#Preview {
+    return AssetDetailsView(marketData: .constant(AssetMarketData.mock()))
+}

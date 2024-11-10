@@ -8,16 +8,25 @@
 import Foundation
 import Combine
 
-final class LiveMarketUpdatesService {
-    private let baseURL = "wss://platform.fintacharts.com/api/streaming/ws/v1/realtime?token="
+protocol LiveMarketUpdatesServiceProtocol {
+    func subscribe(to instrumentId: String)
+    
+    var latestOperationPublisher: Published<ExchangeOperation?>.Publisher { get }
+    var latestOperation: ExchangeOperation? { get }
+}
+
+final class LiveMarketUpdatesService: LiveMarketUpdatesServiceProtocol {
+    private let baseURL = URL(string: "wss://\(APIConstants.domain)/api/streaming/ws/v1/realtime")!
     private var webSocketConnection: WebSocketConnection<StreamingRequest>?
     
+    var latestOperationPublisher: Published<ExchangeOperation?>.Publisher { $latestOperation }
     @Published var latestOperation: ExchangeOperation?
     
     func subscribe(to instrumentId: String) {
         guard let token = TokenStorage.getToken() else { return }
-        let urlString = baseURL.appending(token)
-        guard let url = URL(string: urlString) else { return }
+        var urlComponents = URLComponents(url: baseURL, resolvingAgainstBaseURL: false)!
+        urlComponents.queryItems = [URLQueryItem(name: "token", value: token)]
+        guard let url = urlComponents.url else { return }
         
         unsubscribe()
         
@@ -52,6 +61,7 @@ final class LiveMarketUpdatesService {
     }
     
     func unsubscribe() {
+        latestOperation = nil
         webSocketConnection?.close()
         webSocketConnection = nil
     }

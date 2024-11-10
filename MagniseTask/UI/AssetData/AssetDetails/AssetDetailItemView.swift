@@ -14,7 +14,7 @@ struct AssetDetailItemView: View {
     var body: some View {
         VStack {
             Text(title).font(.headline)
-            Text(value ?? "").font(.body)
+            Text(value ?? "-").font(.body)
         }        
     }
 }
