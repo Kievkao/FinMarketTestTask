@@ -47,6 +47,7 @@ final class AssetChartModel: AssetChartModelProtocol {
             .sink(receiveCompletion: { completion in
                 if case .failure(let error) = completion {
                     print("Get chart data failed: \(error)")
+                    // TODO: Pass errors outside
                 }
             }, receiveValue: { [weak self] items in
                 self?.chartItems = items.map { .init(date: DateFormatter.isoDateFormatterTimeZone.date(from: $0.t) ?? Date(), price: $0.c) }

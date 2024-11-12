@@ -14,7 +14,6 @@ protocol AuthServiceProtocol {
 
 final class AuthService: AuthServiceProtocol {
     let apiClient = URLSessionAPIClient<Endpoint>()
-    private var cancellables = Set<AnyCancellable>()
     
     func authenticate() -> AnyPublisher<TokenResponse, Error> {
         apiClient.request(.getToken)

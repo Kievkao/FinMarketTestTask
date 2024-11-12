@@ -28,12 +28,10 @@ extension AssetDataError: LocalizedError {
     
     var errorDescription: String? {
         switch self {
-        case .auth(let description):
-            description
-        case .loadInstruments(let description):
-            description
-        case .liveData(let description):
-            description
+        case let .auth(description),
+             let .loadInstruments(description),
+             let .liveData(description):
+            return description
         }
     }
 }
@@ -50,12 +48,12 @@ protocol AssetDataViewModelProtocol: ObservableObject {
 }
 
 final class AssetDataViewModel: AssetDataViewModelProtocol {
+    private let authService: AuthServiceProtocol
+    private let instrumentsService: InstrumentsServiceProtocol
+    private let liveDataService: LiveMarketUpdatesServiceProtocol
+
     private var cancellables = Set<AnyCancellable>()
     private var latestOperationSubscription: AnyCancellable?
-    
-    private let authService: AuthServiceProtocol
-    private let instrumentsService: InstrumentsService
-    private let liveDataService: LiveMarketUpdatesServiceProtocol
         
     @Published var instruments: [Instrument] = []
     var instrumentsPublisher: Published<[Instrument]>.Publisher { $instruments }
@@ -67,7 +65,7 @@ final class AssetDataViewModel: AssetDataViewModelProtocol {
     
     init(
         authService: AuthServiceProtocol,
-        instrumentsService: InstrumentsService,
+        instrumentsService: InstrumentsServiceProtocol,
         liveDataService: LiveMarketUpdatesServiceProtocol
     ) {
         self.authService = authService

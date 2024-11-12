@@ -22,19 +22,9 @@ where SelectionModel: AssetSelectionViewModelProtocol,
     var body: some View {
         Group {
             if model.instruments.isEmpty {
-                ProgressView("Loading...")
-                    .onAppear {
-                        model.loadData()
-                    }
+                loadingView()
             } else {
-                VStack {
-                    AssetSelectionView(model: selectionViewModel)
-                        .frame(height: 80)
-                    AssetDetailsView(marketData: $model.latestMarketData)
-                        .frame(height: 100)
-                    AssetChartView(model: chartModel)
-                        .padding(.vertical)
-                }
+                contentView()
             }
         }
         .onReceive(model.errorPublisher) { error in
@@ -47,6 +37,27 @@ where SelectionModel: AssetSelectionViewModelProtocol,
                 message: Text(apiError?.localizedDescription ?? "Unknown error"),
                 dismissButton: .default(Text("OK"))
             )
+        }
+    }
+}
+
+private extension AssetDataView {
+    
+    func loadingView() -> some View {
+        ProgressView("Loading...")
+            .onAppear {
+                model.loadData()
+            }
+    }
+    
+    func contentView() -> some View {
+        VStack {
+            AssetSelectionView(model: selectionViewModel)
+                .frame(height: 80)
+            AssetDetailsView(marketData: $model.latestMarketData)
+                .frame(height: 100)
+            AssetChartView(model: chartModel)
+                .padding(.vertical)
         }
     }
 }
