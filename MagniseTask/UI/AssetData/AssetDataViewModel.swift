@@ -100,6 +100,7 @@ final class AssetDataViewModel: AssetDataViewModelProtocol {
                     self?.apiError = .liveData(error.localizedDescription)
                 }
             }, receiveValue: { [weak self] in
+                self?.apiError = nil
                 self?.latestMarketData = $0
             })
         
