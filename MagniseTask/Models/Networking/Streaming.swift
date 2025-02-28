@@ -37,7 +37,7 @@ struct SubscriptionStatusResponse: Decodable {
     let status: String
 }
 
-final class ExchangeOperation: Decodable {
+struct ExchangeOperation: Decodable {
     let timestamp: String
     let price: Float
 }

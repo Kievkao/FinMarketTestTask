@@ -15,19 +15,22 @@ struct MagniseTaskApp: App {
         liveDataService: LiveMarketUpdatesService()
     )
     @StateObject private var chartViewModel = AssetChartModel(chartService: ChartDataService())
+    @StateObject private var selectionViewModel = AssetSelectionViewModel()
     
     var body: some Scene {
         WindowGroup {
             AssetDataView(
                 model: mainViewModel,
-                selectionViewModel: AssetSelectionViewModel(
-                    instruments: $mainViewModel.instruments,
-                    subscribeHandler: {
-                        mainViewModel.subscribe(to: $0)
-                        chartViewModel.loadData(for: $0.id)
-                    }),
+                selectionViewModel: selectionViewModel,
                 chartModel: chartViewModel
             )
+            .onReceive(selectionViewModel.selectedInstrument) { instrument in
+                mainViewModel.subscribe(to: instrument)
+                chartViewModel.loadData(for: instrument.id)
+            }
+            .onChange(of: mainViewModel.instruments) { old, new in
+                selectionViewModel.update(instruments: new)
+            }
         }
     }
 }

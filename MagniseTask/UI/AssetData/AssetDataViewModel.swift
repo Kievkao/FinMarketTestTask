@@ -38,11 +38,8 @@ extension AssetDataError: LocalizedError {
 
 protocol AssetDataViewModelProtocol: ObservableObject {
     var latestMarketData: AssetMarketData? { get set }
-    
-    var instrumentsPublisher: Published<[Instrument]>.Publisher { get }
     var instruments: [Instrument] { get }
-    
-    var errorPublisher: Published<AssetDataError?>.Publisher { get }
+    var error: PassthroughSubject<AssetDataError, Never> { get }
     
     func loadData()
 }
@@ -56,12 +53,9 @@ final class AssetDataViewModel: AssetDataViewModelProtocol {
     private var latestOperationSubscription: AnyCancellable?
         
     @Published var instruments: [Instrument] = []
-    var instrumentsPublisher: Published<[Instrument]>.Publisher { $instruments }
-    
     @Published var latestMarketData: AssetMarketData?
     
-    @Published var apiError: AssetDataError?
-    var errorPublisher: Published<AssetDataError?>.Publisher { $apiError }
+    let error = PassthroughSubject<AssetDataError, Never>()
     
     init(
         authService: AuthServiceProtocol,
@@ -78,7 +72,7 @@ final class AssetDataViewModel: AssetDataViewModelProtocol {
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 if case .failure(let error) = completion {
-                    self?.apiError = .auth(error.localizedDescription)
+                    self?.error.send(.auth(error.localizedDescription))
                 }
             }, receiveValue: { [weak self] _ in
                 self?.loadInstruments()
@@ -95,12 +89,11 @@ final class AssetDataViewModel: AssetDataViewModelProtocol {
             .compactMap { $0 }
             .map { AssetMarketData(from: $0, symbol: instrument.symbol, currencySign: instrument.currency) }
             .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] completion in
-                if case .failure(let error) = completion {
-                    self?.apiError = .liveData(error.localizedDescription)
+            .sink(receiveCompletion: { [weak self] in
+                if case .failure(let error) = $0 {
+                    self?.error.send(.liveData(error.localizedDescription))
                 }
             }, receiveValue: { [weak self] in
-                self?.apiError = nil
                 self?.latestMarketData = $0
             })
         
@@ -112,9 +105,9 @@ private extension AssetDataViewModel {
     func loadInstruments() {        
         instrumentsService.getInstruments()
             .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] completion in
-                if case .failure(let error) = completion {
-                    self?.apiError = .loadInstruments(error.localizedDescription)
+            .sink(receiveCompletion: { [weak self] in
+                if case .failure(let error) = $0 {
+                    self?.error.send(.loadInstruments(error.localizedDescription))
                 }
             }, receiveValue: { [weak self] instruments in
                 self?.instruments = instruments
@@ -125,10 +118,7 @@ private extension AssetDataViewModel {
 
 final class MockAssetDataViewModel: AssetDataViewModelProtocol {
     @Published var instruments: [Instrument] = []
-    var instrumentsPublisher: Published<[Instrument]>.Publisher { $instruments }
-    
-    @Published var apiError: AssetDataError?
-    var errorPublisher: Published<AssetDataError?>.Publisher { $apiError }
+    var error = PassthroughSubject<AssetDataError, Never>()
     var latestMarketData: AssetMarketData?
     
     func loadData() {}

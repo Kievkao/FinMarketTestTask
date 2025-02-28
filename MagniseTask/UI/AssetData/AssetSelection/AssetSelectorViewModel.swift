@@ -12,20 +12,17 @@ import SwiftUI
 protocol AssetSelectionViewModelProtocol: ObservableObject {
     var instruments: [Instrument] { get set }
     var selectionOptions: [String] { get }
+    var selectedInstrument: PassthroughSubject<Instrument, Never> { get }
     
     func subscribe(to index: Int)
+    func update(instruments: [Instrument])
 }
 
 final class AssetSelectionViewModel: AssetSelectionViewModelProtocol {
     private var cancellables = Set<AnyCancellable>()
-    private let subscribeHandler: ((Instrument) -> Void)
     
-    @Binding var instruments: [Instrument]
-    
-    init(instruments: Binding<[Instrument]>, subscribeHandler: @escaping ((Instrument) -> Void)) {
-        self._instruments = instruments
-        self.subscribeHandler = subscribeHandler
-    }
+    let selectedInstrument = PassthroughSubject<Instrument, Never>()
+    @Published var instruments = [Instrument]()
     
     var selectionOptions: [String] {
         instruments.map { $0.symbol }
@@ -35,12 +32,18 @@ final class AssetSelectionViewModel: AssetSelectionViewModelProtocol {
         guard index >= 0, index < instruments.count else { return }
                 
         let instrument = instruments[index]
-        subscribeHandler(instrument)
+        selectedInstrument.send(instrument)
+    }
+    
+    func update(instruments: [Instrument]) {
+        self.instruments = instruments
     }
 }
 
 final class MockAssetSelectionViewModel: AssetSelectionViewModelProtocol {
+    var selectedInstrument: PassthroughSubject<Instrument, Never> = .init()    
     var instruments: [Instrument] = []
     var selectionOptions: [String] = []
     func subscribe(to index: Int) { }
+    func update(instruments: [Instrument]) { }
 }

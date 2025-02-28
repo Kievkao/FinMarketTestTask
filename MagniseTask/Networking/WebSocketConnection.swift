@@ -18,17 +18,11 @@ enum WebSocketConnectionError: Error {
 
 final class WebSocketConnection<Outgoing: Encodable & Sendable>: NSObject, Sendable {
     private let webSocketTask: URLSessionWebSocketTask
-    private let encoder: JSONEncoder
-    private let decoder: JSONDecoder
+    private let encoder = JSONEncoder()
+    private let decoder = JSONDecoder()
 
-    init(
-        webSocketTask: URLSessionWebSocketTask,
-        encoder: JSONEncoder = JSONEncoder(),
-        decoder: JSONDecoder = JSONDecoder()
-    ) {
+    init(webSocketTask: URLSessionWebSocketTask) {
         self.webSocketTask = webSocketTask
-        self.encoder = encoder
-        self.decoder = decoder
         super.init()
         webSocketTask.resume()
     }

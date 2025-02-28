@@ -8,17 +8,19 @@
 import SwiftUI
 
 struct AssetDetailsView: View {
+    private let spacerMinLength: CGFloat = 12
+    
     @Binding var marketData: AssetMarketData?
     
     var body: some View {
         HStack {
-            Spacer(minLength: 12)
+            Spacer(minLength: spacerMinLength)
             AssetDetailItemView(title: "Symbol", value: marketData?.symbol)
             Spacer()
             AssetDetailItemView(title: "Price", value: marketData?.priceString)
             Spacer()
             AssetDetailItemView(title: "Time", value: marketData?.time)
-            Spacer(minLength: 12)
+            Spacer(minLength: spacerMinLength)
         }
     }
 }

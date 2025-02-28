@@ -16,40 +16,53 @@ struct SheetSelector: View {
 
     var body: some View {
         VStack {
-            Button(action: {
-                isSheetPresented.toggle()
-            }) {
-                HStack {
-                    Text(selectedIndex.map { options[$0] } ?? notSelectedTitle)
-                    Spacer()
-                    Image(systemName: "chevron.down")
+            expandButton
+                .sheet(isPresented: $isSheetPresented) {
+                    sheetContent
                 }
-                .padding()
-                .background(Color.blue.opacity(0.1))
-                .cornerRadius(8)
-            }
-            .sheet(isPresented: $isSheetPresented) {
-                VStack {
-                    Text(notSelectedTitle)
-                        .font(.headline)
-                        .padding()
-
-                    ScrollView {
-                        ForEach(options.indices, id: \.self) { index in
-                            Text(options[index])
-                                .padding()
-                                .onTapGesture {
-                                    selectedIndex = index
-                                    isSheetPresented = false
-                                }
-                            Divider()
-                        }
-                    }
-                }
-                .padding()
-            }
         }
         .padding()
+    }
+}
+
+private extension SheetSelector {
+    var sheetContent: some View {
+        VStack {
+            Text(notSelectedTitle)
+                .font(.headline)
+                .padding()
+            optionsList
+        }
+        .padding()
+    }
+    
+    var optionsList: some View {
+        ScrollView {
+            ForEach(options.indices, id: \.self) { index in
+                Text(options[index])
+                    .padding()
+                    .onTapGesture {
+                        selectedIndex = index
+                        isSheetPresented = false
+                    }
+                Divider()
+            }
+        }
+    }
+    
+    var expandButton: some View {
+        Button(action: {
+            isSheetPresented.toggle()
+        }) {
+            HStack {
+                Text(selectedIndex.map { options[$0] } ?? notSelectedTitle)
+                Spacer()
+                Image(systemName: "chevron.down")
+            }
+            .padding()
+            .background(Color.blue.opacity(0.1))
+            .cornerRadius(8)
+        }
     }
 }
 

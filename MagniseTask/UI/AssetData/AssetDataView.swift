@@ -27,9 +27,9 @@ where SelectionModel: AssetSelectionViewModelProtocol,
                 contentView()
             }
         }
-        .onReceive(model.errorPublisher) { error in
+        .onReceive(model.error) { error in
             apiError = error
-            showErrorAlert = error != nil
+            showErrorAlert = true
         }
         .alert(isPresented: $showErrorAlert) {
             Alert(

@@ -24,9 +24,6 @@ struct AssetMarketData: Equatable {
     init(from operation: ExchangeOperation, symbol: String, currencySign: String) {
         Self.numberFormatter.currencySymbol = currencySign
         
-        let price = operation.price
-        let priceString = Self.numberFormatter.string(from: NSNumber(value: operation.price)) ?? "\(currencySign)\(operation.price)"
-        
         let date: Date
         let time: String
         
@@ -38,6 +35,8 @@ struct AssetMarketData: Equatable {
             time = operation.timestamp
         }
 
+        let price = operation.price
+        let priceString = Self.numberFormatter.string(from: NSNumber(value: price)) ?? "\(currencySign)\(price)"
         self.init(symbol: symbol, priceString: priceString, price: price, time: time, date: date)
     }
     

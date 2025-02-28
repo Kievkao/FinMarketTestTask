@@ -51,7 +51,7 @@ final class LiveMarketUpdatesService: LiveMarketUpdatesServiceProtocol {
             
         do {
             for try await result in connection.receive(type: ExchangeResponse.self) {
-                DispatchQueue.main.async {
+                await MainActor.run {
                     self.latestOperation = result.last
                 }
             }
