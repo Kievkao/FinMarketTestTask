@@ -18,7 +18,7 @@ extension AssetDataError: LocalizedError {
     var failureReason: String? {
         switch self {
         case .auth:
-            "Authenication error"
+            "Authentication error"
         case .loadInstruments:
             "Instruments loading error"
         case .liveData:
